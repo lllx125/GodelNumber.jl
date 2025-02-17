@@ -1,5 +1,6 @@
 module GodelNumber
 
-# Write your package code here.
+include("firstorderlogic.jl")
+include("language.jl")
 
 end
