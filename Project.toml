@@ -1,0 +1,13 @@
+name = "GodelNumber"
+uuid = "40d3f259-c584-404d-8eb0-357259e4d2ed"
+authors = ["Lixing Li"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.6.7"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
