@@ -30,7 +30,7 @@ struct AtomicFormula <: WellFormedFormula
     parameters::Vector{Term}
 end
 
-struct Boolean <: WellFormedFormula
+struct SententialVariable <: WellFormedFormula
     symbol::String
 end
 
