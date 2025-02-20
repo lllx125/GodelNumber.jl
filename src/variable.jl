@@ -1,0 +1,1 @@
+const Variable = Union{Symbol,Int}
