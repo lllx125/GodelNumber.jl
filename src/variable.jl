@@ -1,1 +1,1 @@
-const Variable = Union{Symbol,Int}
+const Variable = Union{Expr,Symbol,Int64}

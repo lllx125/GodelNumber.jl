@@ -1,20 +1,45 @@
 
+function |(a::Variable=:a, b::Variable=:b)
+    assertterm(a)
+    assertterm(b)
+    q = gen_q()
+    return :(∃($q, $q ≤ $b, $a ⋅ $q == $b))
+end
 
-≤(a::Variable, b::Variable) = :(($a < $b) ⩓ ($a == $b))
+function isprime(a::Variable=:a)
+    assertterm(a)
+    q = gen_q()
+    return :(∀($q, $q < $a, ($q > 1) ⩓ (¬($q | $a))))
+end
 
->(a::Variable, b::Variable) = :($b < $a)
+function isadjacentprime(a::Variable=:a, b::Variable=:b)
+    q = gen_q()
+    return :(⩓(isprime($a), isprime($b), ¬(∃($q, $q < $b, ($a < $q) ⩓ (isprime($q))))))
+end
 
-<(a::Variable, b::Variable) = :($a < $b)
+function nthprime(a::Variable=:a, b::Variable=:b)
+    c = gen_q()
+    q = gen_q()
+    r = gen_q()
+    j = gen_q()
+    return :(∃($c, $c ≤ ($b^($a^2)),
+        ⩓(
+            ¬(2 | $c),
+            ∀($q, $q < $b,
+                ∀($r, $r < $b,
+                    (isadjacentprime($q, $r)) ⟹
+                    (
+                        ∀($j, $j < $c,
+                        (($q^$j) | $c) ⟺
+                        (($r^($j ⊕ 1)) | $c)
+                    )
+                    )
+                )
+            ),
+            ($b^$a) | $c,
+            ¬(($b^($a ⊕ 1)) | $c)
+        )))
+end
 
-≥(a::Variable, b::Variable) = :(($b < $a) ⩓ ($a == $b))
-
-==(a::Variable, b::Variable) = :($a == $b)
-
-|(a::Variable, b::Variable, q::Variable=gen_q()) = :(∃($q, ($q ≤ $b) ⩓ ($a ⋅ $q == $b)))
-
-isPrime(a::Variable, q::Variable=gen_q()) = :(∀($q, ⩓($q < $a, $q > 1, ¬($q | $a))))
-
-isAdjacentPrime(a::Variable, b::Variable, q::Variable=gen_q()) = :(⩓(isPrime($a), isPrime($b), ¬(∃($q, ⩓($q < $b, $a < $q, isPrime($q))))))
-
-export ≤, |, isPrime, isAdjacentPrime
+export |, isprime, isadjacentprime, nthprime
 
